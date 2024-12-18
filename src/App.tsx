@@ -29,7 +29,7 @@ function Calendar(props: CalendarProps) {
   // 受控模式
   useEffect(() => {
     if(propsValue === undefined && !isFirstRender.current) {
-      // 非首次渲染，受控模式
+      // 当不是首次渲染，但 value 变为 undefined 的情况，也就是从受控模式切换到了非受控模式，要同步设置 state 为 propsValue。
       setValue(propsValue);
     }
     isFirstRender.current = false;
