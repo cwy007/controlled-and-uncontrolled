@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 
 function useMergeState<T>(
   defaultStateValue: T,
   props?: {
     defaultValue?: T,
     value?: T
+    onChange?: (value: T) => void;
   }
 ): [T, React.Dispatch<React.SetStateAction<T>>,] {
-  const { defaultValue, value: propsValue } = props || {};
+  const { defaultValue, value: propsValue, onChange } = props || {};
 
   const isFirstRender = useRef(true);
 
@@ -35,7 +36,20 @@ function useMergeState<T>(
   // 如果是非受控模式，那渲染用内部 state 的 value，然后 changeValue 里 setValue。
   const mergedValue = propsValue === undefined ? stateValue : propsValue;
 
-  return [mergedValue, setStateValue]
+  function isFunction(value: unknown): value is Function {
+    return typeof value === 'function';
+  }
+
+  const setState = useCallback((value: SetStateAction<T>) => {
+    let res = isFunction(value) ? value(stateValue) : value
+
+    if (propsValue === undefined) {
+      setStateValue(res);
+    }
+    onChange?.(res);
+  }, [stateValue]);
+
+  return [mergedValue, setState]
 }
 
 export default useMergeState;

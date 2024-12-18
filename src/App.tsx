@@ -19,35 +19,29 @@ function Calendar(props: CalendarProps) {
   const [mergedValue, setValue] = useMergeState(new Date(), {
     value: propsValue,
     defaultValue,
+    onChange,
   });
-
-  function changeValue(date: Date) {
-    if (propsValue === undefined) {
-      setValue(date);
-    }
-    onChange?.(date);
-  }
 
   return (
     <div>
       {mergedValue?.toLocaleDateString()}
       <div
         onClick={() => {
-          changeValue(new Date("2024-5-1"));
+          setValue(new Date("2024-5-1"));
         }}
       >
         2023-5-1
       </div>
       <div
         onClick={() => {
-          changeValue(new Date("2024-5-2"));
+          setValue(new Date("2024-5-2"));
         }}
       >
         2023-5-2
       </div>
       <div
         onClick={() => {
-          changeValue(new Date("2024-5-3"));
+          setValue(new Date("2024-5-3"));
         }}
       >
         2023-5-3
