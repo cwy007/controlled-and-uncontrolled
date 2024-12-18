@@ -1,23 +1,19 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 
 interface CalendarProps{
-  defaultValue?: Date;
+  value: Date;
   onChange?: (date: Date) => void;
 }
 function Calendar(props: CalendarProps) {
 
   const {
-    defaultValue = new Date(),
+    value,
     onChange
   } = props;
 
-  const [value, setValue] = useState(defaultValue);
-
   function changeValue(date: Date) {
-    setValue(date);
     onChange?.(date);
   }
-
 
   return <div>
     {value.toLocaleDateString()}
@@ -28,8 +24,11 @@ function Calendar(props: CalendarProps) {
 }
 
 function App() {
-  return <Calendar defaultValue={new Date('2024-5-1')} onChange={(date) => {
+  const [value, setValue] = useState(new Date('2024-5-1'));
+
+  return <Calendar value={value} onChange={(date) => {
     console.log(date.toLocaleDateString());
+    setValue(date);
   }}/>
 }
 
