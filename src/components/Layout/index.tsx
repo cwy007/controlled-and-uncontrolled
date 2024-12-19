@@ -1,15 +1,39 @@
 import React from 'react'
 import styles from './index.module.scss';
-import { Outlet } from 'react-router';
+import { NavLink, Outlet } from 'react-router';
 
 const Layout = () => {
+
+  const links = [
+    {
+      name: '首页',
+      path: '/',
+    },
+    {
+      name: 'calendar-test',
+      path: '/calendar-test',
+    },
+  ]
   return (
     <div className={styles.container}>
       <div className={styles.header}>header</div>
-      <div className={styles.sidebar}>sidebar</div>
-      <div className={styles.mainContent}>
-        <Outlet />
+      <div className={styles.wrapper}>
+        <div className={styles.sidebar}>
+          <ul>
+            {links.map(v => (
+              <li key={v.path}>
+                <NavLink to={v.path}>
+                  {v.name}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className={styles.mainContent}>
+          <Outlet />
+        </div>
       </div>
+
     </div>
   )
 }
