@@ -88,7 +88,7 @@ function InternalCalendar(props: CalendarProps, ref: ForwardedRef<CalendarRef>) 
   };
 
   return (
-    <div className="calendar">
+    <div className="calendar-test">
       <div className="header">
         <button onClick={handlePrevMonth}>&lt;</button>
         <div>

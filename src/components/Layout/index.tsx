@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './index.module.scss';
 import { NavLink, Outlet } from 'react-router';
 
@@ -10,8 +9,12 @@ const Layout = () => {
       path: '/',
     },
     {
-      name: 'calendar-test',
+      name: 'calendar-mini',
       path: '/calendar-test',
+    },
+    {
+      name: 'calendar-enterprise',
+      path: '/calendar-enterprise',
     },
   ]
   return (
