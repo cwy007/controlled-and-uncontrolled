@@ -2,6 +2,7 @@ import { ForwardedRef, forwardRef, useImperativeHandle, useState } from "react";
 import "./index.module.scss";
 import { daysOfMonth, firstDayOfMonth } from "./utils";
 import classNames from "classnames";
+import { useControllableValue } from "ahooks";
 
 const monthNames = [
   "一月",
@@ -19,6 +20,7 @@ const monthNames = [
 ];
 
 interface CalendarProps {
+  value?: Date;
   defaultValue?: Date;
   onChange?: (date: Date) => void;
 }
@@ -29,8 +31,10 @@ export interface CalendarRef {
 }
 
 function InternalCalendar(props: CalendarProps, ref: ForwardedRef<CalendarRef>) {
-  const { defaultValue = new Date(), onChange } = props;
-  const [date, setDate] = useState(defaultValue);
+  // const { defaultValue = new Date(), onChange } = props;
+  const [date, setDate] = useControllableValue(props, {
+    defaultValue: new Date(),
+  });
 
   useImperativeHandle(ref, () => {
     return {
@@ -64,7 +68,7 @@ function InternalCalendar(props: CalendarProps, ref: ForwardedRef<CalendarRef>) 
       const handleClick = () => {
         const currDate = new Date(date.getFullYear(), date.getMonth(), i);
         setDate(currDate);
-        onChange?.(currDate);
+        // onChange?.(currDate);
       };
       days.push(
         <div
