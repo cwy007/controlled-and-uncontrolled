@@ -1,6 +1,6 @@
 import "./index.module.scss";
 import { CalendarProps } from ".";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import classNames from "classnames";
 
 const weekList = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
@@ -43,6 +43,7 @@ const renderDays = (days: Array<{ date: Dayjs; currentMonth: boolean }>) => {
       const item = days[i * 7 + j];
       row[j] = (
         <div
+          key={`${i}_${j}`}
           className={classNames('calendar-month-body-cell', {
             'calendar-month-body-cell-current': item.currentMonth,
           })}
@@ -53,8 +54,8 @@ const renderDays = (days: Array<{ date: Dayjs; currentMonth: boolean }>) => {
     }
     rows.push(row);
   }
-  return rows.map((row) => (
-    <div className="calendar-month-body-row">{row}</div>
+  return rows.map((row, index) => (
+    <div className="calendar-month-body-row" key={index}>{row}</div>
   ));
 };
 
