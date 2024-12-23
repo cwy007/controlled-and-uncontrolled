@@ -33,6 +33,8 @@ const CalendarEnterprise = () => {
         //     </div>
         //   );
         // }}
+
+        locale="zh-CN"
       />
     </div>
   );
