@@ -27,7 +27,7 @@ const getAllDays = (date: Dayjs) => {
   for (let i = day; i < daysInfo.length; i++) {
     const calcDate = startDate.add(i - day, "day");
     daysInfo[i] = {
-      date: startDate.add(i - day, "day"),
+      date: calcDate,
       currentMonth: calcDate.month() === date.month(),
       // .format('YYYY-MM-DD'),
     };
@@ -35,7 +35,11 @@ const getAllDays = (date: Dayjs) => {
   return daysInfo;
 };
 
-const renderDays = (days: Array<{ date: Dayjs; currentMonth: boolean }>) => {
+const renderDays = (
+  days: Array<{ date: Dayjs; currentMonth: boolean }>,
+  dateRender: MonthCalendarProps["dateRender"],
+  dateInnerContent: MonthCalendarProps["dateInnerContent"]
+) => {
   const rows = [];
   for (let i = 0; i < 6; i++) {
     const row = [];
@@ -44,22 +48,37 @@ const renderDays = (days: Array<{ date: Dayjs; currentMonth: boolean }>) => {
       row[j] = (
         <div
           key={`${i}_${j}`}
-          className={classNames('calendar-month-body-cell', {
-            'calendar-month-body-cell-current': item.currentMonth,
+          className={classNames("calendar-month-body-cell", {
+            "calendar-month-body-cell-current": item.currentMonth,
           })}
         >
-          {item.date.date()}
+          {/* {dateRender ? dateRender(item.date) : item.date.date()} */}
+          {dateRender ? (
+            dateRender(item.date)
+          ) : (
+            <div className="calendar-month-body-cell-date">
+              <div className="calendar-month-body-cell-date-value">
+                {item.date.date()}
+              </div>
+              <div className="calendar-month-body-cell-date-content">
+                {dateInnerContent?.(item.date)}
+              </div>
+            </div>
+          )}
         </div>
       );
     }
     rows.push(row);
   }
   return rows.map((row, index) => (
-    <div className="calendar-month-body-row" key={index}>{row}</div>
+    <div className="calendar-month-body-row" key={index}>
+      {row}
+    </div>
   ));
 };
 
 const MonthCalendar = (props: MonthCalendarProps) => {
+  const { dateRender, dateInnerContent } = props;
   const allDays = getAllDays(props.value);
 
   return (
@@ -72,7 +91,9 @@ const MonthCalendar = (props: MonthCalendarProps) => {
         ))}
       </div>
 
-      <div className="calendar-month-body">{renderDays(allDays)}</div>
+      <div className="calendar-month-body">
+        {renderDays(allDays, dateRender, dateInnerContent)}
+      </div>
     </div>
   );
 };

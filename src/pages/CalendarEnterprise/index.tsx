@@ -1,18 +1,41 @@
-import dayjs from 'dayjs'
-import Calendar from '../../components/Calendar'
+import dayjs from "dayjs";
+import Calendar from "../../components/Calendar";
 
 const CalendarEnterprise = () => {
   return (
     <div>
-      {dayjs('2023-11-1').daysInMonth()}
+      {/* {dayjs('2023-11-1').daysInMonth()}
       <br/>
       {dayjs('2023-11-1').startOf('month').format('YYYY-MM-DD')}
       <br/>
-      {dayjs('2023-11-1').endOf('month').format('YYYY-MM-DD')}
+      {dayjs('2023-11-1').endOf('month').format('YYYY-MM-DD')} */}
 
-      <Calendar value={dayjs('2023-11-08')} />
+      <Calendar
+        value={dayjs("2023-11-08")}
+        className={"aaa"}
+        // style={{ background: 'yellow' }}
+        // dateRender={(value) => {
+        //   return (
+        //     <div>
+        //       <p style={{ background: "yellowgreen", height: "350px" }}>
+        //         {value.format("YYYY/MM/DD")}
+        //       </p>
+        //     </div>
+        //   );
+        // }}
+
+        // dateInnerContent={(value) => {
+        //   return (
+        //     <div>
+        //       <p style={{ background: "yellowgreen", height: "30px" }}>
+        //         {value.format("YYYY/MM/DD")}
+        //       </p>
+        //     </div>
+        //   );
+        // }}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default CalendarEnterprise
+export default CalendarEnterprise;
