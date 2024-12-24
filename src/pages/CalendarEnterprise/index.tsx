@@ -34,7 +34,8 @@ const CalendarEnterprise = () => {
         //   );
         // }}
 
-        locale="zh-CN"
+        locale="en-US"
+        // locale="zh-CN"
 
         onChange={(date) => {
           console.log(date.format('YYYY-MM-DD'));
