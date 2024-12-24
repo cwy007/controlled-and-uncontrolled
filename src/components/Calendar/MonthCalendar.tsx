@@ -19,7 +19,7 @@ const weekList = [
 
 interface MonthCalendarProps extends CalendarProps {
   selectHandler?: (date: Dayjs) => void;
-  currMonth: Dayjs,
+  currMonth: Dayjs;
 }
 
 const getAllDays = (date: Dayjs) => {
@@ -50,63 +50,58 @@ const getAllDays = (date: Dayjs) => {
   return daysInfo;
 };
 
-const renderDays = (
-  days: Array<{ date: Dayjs; currentMonth: boolean }>,
-  dateRender: MonthCalendarProps["dateRender"],
-  dateInnerContent: MonthCalendarProps["dateInnerContent"],
-  value: Dayjs,
-  selectHandler: MonthCalendarProps["selectHandler"]
-) => {
-  const rows = [];
-  for (let i = 0; i < 6; i++) {
-    const row = [];
-    for (let j = 0; j < 7; j++) {
-      const item = days[i * 7 + j];
-      row[j] = (
-        <div
-          key={`${i}_${j}`}
-          className={classNames("calendar-month-body-cell", {
-            "calendar-month-body-cell-current": item.currentMonth,
-          })}
-          onClick={() => selectHandler?.(item.date)}
-        >
-          {/* {dateRender ? dateRender(item.date) : item.date.date()} */}
-          {dateRender ? (
-            dateRender(item.date)
-          ) : (
-            <div className="calendar-month-body-cell-date">
-              <div
-                className={classNames("calendar-month-body-cell-date-value", {
-                  ["calendar-month-body-cell-date-selected"]:
-                    value.format("YYYY-MM-DD") ===
-                    item.date.format("YYYY-MM-DD"),
-                })}
-              >
-                {item.date.date()}
-              </div>
-              <div className="calendar-month-body-cell-date-content">
-                {dateInnerContent?.(item.date)}
-              </div>
-            </div>
-          )}
-        </div>
-      );
-    }
-    rows.push(row);
-  }
-  return rows.map((row, index) => (
-    <div className="calendar-month-body-row" key={index}>
-      {row}
-    </div>
-  ));
-};
-
 const MonthCalendar = (props: MonthCalendarProps) => {
   const localeContext = useContext(LocaleContext);
-  const { value, dateRender, dateInnerContent, selectHandler, currMonth } = props;
+  const { value, dateRender, dateInnerContent, selectHandler, currMonth } =
+    props;
   const allDays = getAllDays(currMonth);
 
   const CalendarLocale = allLocales[localeContext.locale];
+
+  const renderDays = (days: Array<{ date: Dayjs; currentMonth: boolean }>) => {
+    const rows = [];
+    for (let i = 0; i < 6; i++) {
+      const row = [];
+      for (let j = 0; j < 7; j++) {
+        const item = days[i * 7 + j];
+        row[j] = (
+          <div
+            key={`${i}_${j}`}
+            className={classNames("calendar-month-body-cell", {
+              "calendar-month-body-cell-current": item.currentMonth,
+            })}
+            onClick={() => selectHandler?.(item.date)}
+          >
+            {/* {dateRender ? dateRender(item.date) : item.date.date()} */}
+            {dateRender ? (
+              dateRender(item.date)
+            ) : (
+              <div className="calendar-month-body-cell-date">
+                <div
+                  className={classNames("calendar-month-body-cell-date-value", {
+                    ["calendar-month-body-cell-date-selected"]:
+                      value?.format("YYYY-MM-DD") ===
+                      item.date.format("YYYY-MM-DD"),
+                  })}
+                >
+                  {item.date.date()}
+                </div>
+                <div className="calendar-month-body-cell-date-content">
+                  {dateInnerContent?.(item.date)}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
+      rows.push(row);
+    }
+    return rows.map((row, index) => (
+      <div className="calendar-month-body-row" key={index}>
+        {row}
+      </div>
+    ));
+  };
 
   return (
     <div className="calendar-month">
@@ -118,9 +113,7 @@ const MonthCalendar = (props: MonthCalendarProps) => {
         ))}
       </div>
 
-      <div className="calendar-month-body">
-        {renderDays(allDays, dateRender, dateInnerContent, value, selectHandler)}
-      </div>
+      <div className="calendar-month-body">{renderDays(allDays)}</div>
     </div>
   );
 };

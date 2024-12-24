@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import Calendar from "../../components/Calendar";
 
 const CalendarEnterprise = () => {
@@ -11,7 +11,7 @@ const CalendarEnterprise = () => {
       {dayjs('2023-11-1').endOf('month').format('YYYY-MM-DD')} */}
 
       <Calendar
-        value={dayjs("2023-11-08")}
+        // value={dayjs("2023-11-08")}
         className={"aaa"}
         // style={{ background: 'yellow' }}
         // dateRender={(value) => {

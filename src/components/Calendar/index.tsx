@@ -4,9 +4,12 @@ import Header from "./Header";
 import { CSSProperties, ReactNode, useState } from "react";
 import classNames from "classnames";
 import LocaleContext from "./LocaleContext";
+import { useControllableValue } from "ahooks";
 
 export interface CalendarProps {
-  value: Dayjs;
+  value?: Dayjs;
+  defaultValue?: Dayjs;
+  onChange?: (date: Dayjs) => void;
   style?: CSSProperties;
   className?: string | string[];
   // 定制日期显示，会完全覆盖日期单元格
@@ -15,20 +18,26 @@ export interface CalendarProps {
   dateInnerContent?: (currentDate: Dayjs) => ReactNode;
   // 国际化相关
   locale?: string;
-  onChange?: (date: Dayjs) => void;
 }
 
 const Calendar = (props: CalendarProps) => {
-  const { value, style, className, locale, onChange } = props;
-  const [currValue, setCurrValue] = useState<Dayjs>(value);
-  const [currMonth, setCurrMonth] = useState<Dayjs>(value);
+  const { style, className, locale } = props;
+  const [currValue, setCurrValue] = useControllableValue(props, {
+    defaultValue: dayjs(),
+  })
+  // useState<Dayjs>(value);
+  const [currMonth, setCurrMonth] = useState<Dayjs>(currValue);
 
   const clsNames = classNames("calendar", className);
 
-  const selectHandler = (date: Dayjs) => {
+  const changeDate = (date: Dayjs) => {
     setCurrValue(date);
     setCurrMonth(date);
-    onChange?.(date);
+  }
+
+  const selectHandler = (date: Dayjs) => {
+    console.log('selectHandler-->', date)
+    changeDate(date);
   };
 
   const prevMonthHandler = () => {
@@ -41,9 +50,7 @@ const Calendar = (props: CalendarProps) => {
 
   const todayHandler = () => {
     const date = dayjs(Date.now());
-    setCurrValue(date);
-    setCurrMonth(date);
-    onChange?.(date);
+    changeDate(date);
   }
 
   return (
