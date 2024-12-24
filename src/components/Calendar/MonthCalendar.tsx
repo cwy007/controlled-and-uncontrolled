@@ -19,6 +19,7 @@ const weekList = [
 
 interface MonthCalendarProps extends CalendarProps {
   selectHandler?: (date: Dayjs) => void;
+  currMonth: Dayjs,
 }
 
 const getAllDays = (date: Dayjs) => {
@@ -102,8 +103,8 @@ const renderDays = (
 
 const MonthCalendar = (props: MonthCalendarProps) => {
   const localeContext = useContext(LocaleContext);
-  const { value, dateRender, dateInnerContent, selectHandler } = props;
-  const allDays = getAllDays(props.value);
+  const { value, dateRender, dateInnerContent, selectHandler, currMonth } = props;
+  const allDays = getAllDays(currMonth);
 
   const CalendarLocale = allLocales[localeContext.locale];
 
