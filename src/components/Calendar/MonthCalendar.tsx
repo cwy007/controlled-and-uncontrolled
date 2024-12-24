@@ -74,7 +74,7 @@ const MonthCalendar = (props: MonthCalendarProps) => {
           >
             {/* {dateRender ? dateRender(item.date) : item.date.date()} */}
             {dateRender ? (
-              dateRender(item.date)
+              dateRender(item.date, value)
             ) : (
               <div className="calendar-month-body-cell-date">
                 <div
