@@ -80,7 +80,7 @@ const MonthCalendar = (props: MonthCalendarProps) => {
                 <div
                   className={classNames("calendar-month-body-cell-date-value", {
                     ["calendar-month-body-cell-date-selected"]:
-                      value?.format("YYYY-MM-DD") ===
+                      value?.format?.("YYYY-MM-DD") ===
                       item.date.format("YYYY-MM-DD"),
                   })}
                 >

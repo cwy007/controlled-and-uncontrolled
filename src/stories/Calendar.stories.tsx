@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-// import Calendar from '../../Calendar/index';
 import dayjs from "dayjs";
-import Calendar from "../components/Calendar";
+import Calendar, { CalendarProps } from "../components/Calendar";
 import classNames from "classnames";
 
 const meta = {
@@ -11,17 +10,35 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
+  argTypes: {
+    value: { control: "date" },
+  },
 } satisfies Meta<typeof Calendar>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const renderCalendar = (args: CalendarProps) => {
+  if (typeof args.value === "number") {
+    return <Calendar {...args} value={dayjs(new Date(args.value))} />;
+  }
+
+  return <Calendar {...args} />;
+};
+
 export const Value: Story = {
   args: {
     value: dayjs("2023-11-08"),
   },
+  render: renderCalendar,
 };
+
+// export const Value: Story = {
+//   args: {
+//     value: dayjs("2023-11-08"),
+//   },
+// };
 
 export const DateRender: Story = {
   args: {
