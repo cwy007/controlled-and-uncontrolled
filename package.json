@@ -15,6 +15,7 @@
     "ahooks": "^3.8.4",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
+    "jotai": "^2.12.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.0.2"

@@ -5,18 +5,22 @@ const Layout = () => {
 
   const links = [
     {
-      name: '首页',
-      path: '/',
+      name: "首页",
+      path: "/",
     },
     {
-      name: 'calendar-mini',
-      path: '/calendar-test',
+      name: "calendar-mini",
+      path: "/calendar-test",
     },
     {
-      name: 'calendar-enterprise',
-      path: '/calendar-enterprise',
+      name: "calendar-enterprise",
+      path: "/calendar-enterprise",
     },
-  ]
+    {
+      name: "suspense-demo",
+      path: "/suspense-demo",
+    },
+  ];
   return (
     <div className={styles.container}>
       <div className={styles.header}>header</div>
