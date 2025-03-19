@@ -14,6 +14,7 @@ const UserName = () => {
 
 const SuspenseDemo = () => {
   // test ErrorBoundary
+  // throw new Error('test ErrorBoundary')
   // console.log('SuspenseDemo render', window.a.b)
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
