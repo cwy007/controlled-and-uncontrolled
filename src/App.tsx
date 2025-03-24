@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import useMergeState from "./hooks/useMergeState";
+import { IconAdd } from "./components/Icon/icons/IconAdd";
+import { IconEmail } from "./components/Icon/icons/IconEmail";
+import { create } from "storybook/internal/theming";
+import createFromIconfont from "./components/Icon/createFromIconfont";
 
 interface CalendarProps {
   value?: Date;
@@ -50,19 +54,32 @@ function Calendar(props: CalendarProps) {
   );
 }
 
+const Iconfont = createFromIconfont("//at.alicdn.com/t/c/font_546173_sq3xixqx7fm.js");
+
 function App() {
   const [value, setValue] = useState(new Date("2024-5-1"));
   // return <Calendar defaultValue={new Date('2024-5-1')} onChange={(date) => {
   //   console.log(date.toLocaleDateString());
   // }}/>
   return (
-    <Calendar
-      value={value}
-      onChange={(date) => {
-        console.log(date.toLocaleDateString());
-        setValue(date);
-      }}
-    />
+    <div>
+      <Calendar
+        value={value}
+        onChange={(date) => {
+          console.log(date.toLocaleDateString());
+          setValue(date);
+        }}
+      />
+
+      <div style={{ padding: "50px" }}>
+        <IconAdd size="40px"></IconAdd>
+        <IconEmail spin></IconEmail>
+        <IconEmail style={{ color: "blue", fontSize: "50px" }}></IconEmail>
+
+        <br />
+        <Iconfont type="ncicon-color_origin" size="4em" />
+      </div>
+    </div>
   );
 }
 
