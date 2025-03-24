@@ -15,7 +15,7 @@ export const getSize = (size: IconProps['size']) => {
   if (Array.isArray(size) && size.length === 2) {
     return size;
   }
-  const width = (size as string) || '1em';
+  const width = (size as string) || '1em'; // width: em相对于自身font-size的倍数
   const height = (size as string) || "1em";
 
   return [width, height];
