@@ -5,9 +5,9 @@ const VerifyCodeLogin = () => {
   const [verifyCode, setVerifyCode] = useState("");
   const [error, setError] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const timerRef = useRef(0)
-  const [count, setCount] = useState(0)
-  const [focusedInput, setFocusedInput] = useState('');
+  const timerRef = useRef(0);
+  const [count, setCount] = useState(0);
+  const [focusedInput, setFocusedInput] = useState("");
 
   const validatePhone = (phoneNumber) => {
     const phoneRegex = /^\d{11}$/;
@@ -59,14 +59,14 @@ const VerifyCodeLogin = () => {
       setLoading(false);
     }
     // in 60 seconds, the button can be clicked again
-    let count = 60
-    setCount(60)
+    let count = 60;
+    setCount(60);
     timerRef.current = setInterval(() => {
-      setCount((count) => count - 1)
+      setCount((count) => count - 1);
       if (count <= 0) {
-        clearInterval(timerRef.current)
+        clearInterval(timerRef.current);
       }
-    }, 1000)
+    }, 1000);
   };
 
   const handleSmsLogin = async (e) => {
@@ -235,7 +235,7 @@ const PasswordLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const [focusedInput, setFocusedInput] = useState('');
+  const [focusedInput, setFocusedInput] = useState("");
 
   const handlePasswordLogin = async (e) => {
     e.preventDefault();
@@ -393,13 +393,15 @@ export default function LoginComponent() {
 
 const styles = {
   container: {
-    width: "100%",
+    // width: "100%",
+    width: "calc(100vw - 2rem)",
     maxWidth: "500px",
     minWidth: "280px",
     margin: "0 auto",
     padding: "2rem",
     "@media (max-width: 480px)": {
       padding: "1rem",
+      width: "calc(100vw - 1rem)",
       margin: "0.5rem",
     },
   },
@@ -498,7 +500,8 @@ const styles = {
     backgroundColor: "transparent",
     border: "1px solid rgba(255, 255, 255, 0.2)",
     color: "#fff",
-    padding: "0 1.5rem",
+    // padding: "0 1.5rem",
+    minWidth: "80px",
     borderRadius: 8,
     cursor: "pointer",
     transition: "background-color 0.2s",
@@ -512,7 +515,7 @@ const styles = {
       boxShadow: "0 0 0 2px rgba(0, 102, 255, 0.2)",
     },
     "@media (max-width: 480px)": {
-      padding: "0 0.5rem",
+      // padding: "0 0.5rem",
       fontSize: "0.85rem",
     },
   },
