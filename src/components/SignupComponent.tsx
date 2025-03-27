@@ -144,7 +144,7 @@ export default function SignupComponent() {
             type="tel"
             value={username}
             onChange={(e) => setUsername(e.target.value?.trim())}
-            placeholder="Enter Phone / Username"
+            placeholder="Enter Username"
             style={{
               ...styles.input,
               ...(focusedInput === "username" ? styles.inputFocused : {}),

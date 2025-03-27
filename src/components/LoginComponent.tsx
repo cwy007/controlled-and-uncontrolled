@@ -1,5 +1,15 @@
 import { useRef, useState } from "react";
 
+// 用于qa和sit环境的切换，方便测试
+let newcoreHost = 'https://c2.xinheyun.com';
+const threeChatAiEnv = localStorage.getItem("threeChatAiEnv");
+if (threeChatAiEnv === 'qa') {
+  newcoreHost = "https://qa.newcoretech.com";
+}
+if (threeChatAiEnv === "sit") {
+  newcoreHost = "https://sit.newcoretech.com";
+}
+
 const VerifyCodeLogin = () => {
   const [phone, setPhone] = useState("");
   const [verifyCode, setVerifyCode] = useState("");
@@ -27,7 +37,7 @@ const VerifyCodeLogin = () => {
     // Here you would typically make an API call to send verification code
     try {
       const response = await fetch(
-        "https://c2.xinheyun.com/api/basedata/userCenter/account/v1/sms/bind",
+        `${newcoreHost}/api/basedata/userCenter/account/v1/sms/bind`,
         {
           method: "POST",
           headers: {
@@ -89,7 +99,7 @@ const VerifyCodeLogin = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://c2.xinheyun.com/api-domain/user-center/authority/authority/v1/login/bySms",
+        `${newcoreHost}/api-domain/user-center/authority/authority/v1/login/bySms`,
         {
           method: "POST",
           headers: {
@@ -112,7 +122,7 @@ const VerifyCodeLogin = () => {
       // Handle successful login (e.g., store token, redirect)
       if (data.code === 200) {
         console.log("Login successful:", data);
-        window.location.href = "https://c2.xinheyun.com/embedded-app/subapp?url=/butler/inbox";
+        window.location.href = `${newcoreHost}/embedded-app/subapp?url=/butler/inbox`;
       } else {
         setError({ login: "Login failed. Please try again." });
       }
@@ -257,7 +267,7 @@ const PasswordLogin = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://c2.xinheyun.com/api-domain/user-center/authority/authority/v1/login",
+        `${newcoreHost}/api-domain/user-center/authority/authority/v1/login`,
         {
           method: "POST",
           headers: {
@@ -280,7 +290,7 @@ const PasswordLogin = () => {
       // Handle successful login (e.g., store token, redirect)
       if (data.code === 200) {
         console.log("Login successful:", data);
-        window.location.href = "https://c2.xinheyun.com/embedded-app/subapp?url=/butler/inbox";
+        window.location.href = `${newcoreHost}/embedded-app/subapp?url=/butler/inbox`;
       } else {
         setError({ login: "Login failed. Please try again." });
       }
