@@ -1,5 +1,15 @@
 import { useRef, useState } from "react";
 
+// 用于qa和sit环境的切换，方便测试
+let newcoreHost = 'https://c2.xinheyun.com';
+const threeChatAiEnv = localStorage.getItem("threeChatAiEnv");
+if (threeChatAiEnv === 'qa') {
+  newcoreHost = "https://qa.newcoretech.com";
+}
+if (threeChatAiEnv === "sit") {
+  newcoreHost = "https://sit.newcoretech.com";
+}
+
 export default function SignupComponent() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState<Record<string, string>>({});
@@ -27,7 +37,7 @@ export default function SignupComponent() {
     // Here you would typically make an API call to send verification code
     try {
       const response = await fetch(
-        "https://c2.xinheyun.com/api/basedata/userCenter/account/v1/sms/bind",
+        `${newcoreHost}/api/basedata/userCenter/account/v1/sms/bind`,
         {
           method: "POST",
           headers: {
@@ -96,7 +106,7 @@ export default function SignupComponent() {
     setLoading(true);
     try {
       const response = await fetch(
-        "https://c2.xinheyun.com/api/operation/multiOrg/account/phone/signup",
+        `${newcoreHost}/api/operation/multiOrg/account/phone/signup`,
         {
           method: "POST",
           headers: {
@@ -121,7 +131,7 @@ export default function SignupComponent() {
       // Handle successful signup (e.g., store token, redirect)
       if (data.code === 200) {
         console.log("Signup successful:", data);
-        window.location.href = "https://c2.xinheyun.com/embedded-app/subapp?url=/butler/inbox";
+        window.location.href = `${newcoreHost}/embedded-app/subapp?url=/butler/inbox`;
       } else {
         setError({ signup: "Signup failed. Please try again." });
       }
