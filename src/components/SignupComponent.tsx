@@ -47,7 +47,7 @@ export default function SignupComponent() {
     // Here you would typically make an API call to send verification code
     try {
       const response = await fetch(
-        `${getNewcoreHost()}/api/basedata/userCenter/account/v1/sms/bind`,
+        `${getNewcoreHost()}/api-domain/user-center/authority/authority/v1/login/sms`,
         {
           method: "POST",
           headers: {
