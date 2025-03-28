@@ -55,7 +55,7 @@ const VerifyCodeLogin = () => {
           },
           body: JSON.stringify({
             body: {
-              mobilePhone: phone,
+              phoneNum: phone,
             },
           }),
         }

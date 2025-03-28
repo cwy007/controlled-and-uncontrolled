@@ -55,7 +55,7 @@ export default function SignupComponent() {
           },
           body: JSON.stringify({
             body: {
-              mobilePhone: phone,
+              phoneNum: phone,
             },
           }),
         }
