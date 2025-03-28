@@ -1,13 +1,23 @@
 import { useRef, useState } from "react";
 
-// 用于qa和sit环境的切换，方便测试
-let newcoreHost = 'https://c2.xinheyun.com';
-const threeChatAiEnv = localStorage.getItem("threeChatAiEnv");
-if (threeChatAiEnv === 'qa') {
-  newcoreHost = "https://qa.newcoretech.com";
+/** 用于qa和sit环境的切换，方便测试 */
+const getNewcoreHost = () => {
+  let host = 'https://c2.xinheyun.com';
+  const threeChatAiEnv = localStorage.getItem("threeChatAiEnv");
+  if (threeChatAiEnv === 'qa') {
+    host = "https://qa.newcoretech.com";
+  }
+  if (threeChatAiEnv === "sit") {
+    host = "https://sit.newcoretech.com";
+  }
+  return host;
 }
-if (threeChatAiEnv === "sit") {
-  newcoreHost = "https://sit.newcoretech.com";
+
+const loginByCrossToken = (crossToken) => {
+  const host = getNewcoreHost();
+  const redirectUrl = `${host}/embedded-app/subapp?url=/butler/inbox`;
+  const crossOriginLoginUrl = `${host}/home-app/cross-origin-login`;
+  window.location.href = `${crossOriginLoginUrl}?crossToken=${crossToken}&redirectUrl=${redirectUrl}`;
 }
 
 const VerifyCodeLogin = () => {
@@ -37,7 +47,7 @@ const VerifyCodeLogin = () => {
     // Here you would typically make an API call to send verification code
     try {
       const response = await fetch(
-        `${newcoreHost}/api/basedata/userCenter/account/v1/sms/bind`,
+        `${getNewcoreHost()}/api/basedata/userCenter/account/v1/sms/bind`,
         {
           method: "POST",
           headers: {
@@ -99,7 +109,7 @@ const VerifyCodeLogin = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${newcoreHost}/api-domain/user-center/authority/authority/v1/login/bySms`,
+        `${getNewcoreHost()}/api-domain/user-center/authority/authority/v1/login/bySms`,
         {
           method: "POST",
           headers: {
@@ -109,6 +119,7 @@ const VerifyCodeLogin = () => {
             body: {
               mobilePhone: phone,
               smsCode: verifyCode,
+              crossToken: true,
             },
           }),
         }
@@ -122,7 +133,10 @@ const VerifyCodeLogin = () => {
       // Handle successful login (e.g., store token, redirect)
       if (data.code === 200) {
         console.log("Login successful:", data);
-        window.location.href = `${newcoreHost}/embedded-app/subapp?url=/butler/inbox`;
+        const crossToken = data.data?.entity?.crossToken;
+        if (crossToken) {
+          loginByCrossToken(crossToken);
+        }
       } else {
         setError({ login: "Login failed. Please try again." });
       }
@@ -267,7 +281,7 @@ const PasswordLogin = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `${newcoreHost}/api-domain/user-center/authority/authority/v1/login`,
+        `${getNewcoreHost()}/api-domain/user-center/authority/authority/v1/login`,
         {
           method: "POST",
           headers: {
@@ -277,6 +291,7 @@ const PasswordLogin = () => {
             body: {
               account: username,
               password: password,
+              crossToken: true,
             },
           }),
         }
@@ -290,7 +305,10 @@ const PasswordLogin = () => {
       // Handle successful login (e.g., store token, redirect)
       if (data.code === 200) {
         console.log("Login successful:", data);
-        window.location.href = `${newcoreHost}/embedded-app/subapp?url=/butler/inbox`;
+        const crossToken = data.data?.entity?.crossToken;
+        if (crossToken) {
+          loginByCrossToken(crossToken);
+        }
       } else {
         setError({ login: "Login failed. Please try again." });
       }

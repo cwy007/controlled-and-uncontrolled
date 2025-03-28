@@ -1,14 +1,24 @@
 import { useRef, useState } from "react";
 
-// 用于qa和sit环境的切换，方便测试
-let newcoreHost = 'https://c2.xinheyun.com';
-const threeChatAiEnv = localStorage.getItem("threeChatAiEnv");
-if (threeChatAiEnv === 'qa') {
-  newcoreHost = "https://qa.newcoretech.com";
+/** 用于qa和sit环境的切换，方便测试 */
+const getNewcoreHost = () => {
+  let host = 'https://c2.xinheyun.com';
+  const threeChatAiEnv = localStorage.getItem("threeChatAiEnv");
+  if (threeChatAiEnv === 'qa') {
+    host = "https://qa.newcoretech.com";
+  }
+  if (threeChatAiEnv === "sit") {
+    host = "https://sit.newcoretech.com";
+  }
+  return host;
 }
-if (threeChatAiEnv === "sit") {
-  newcoreHost = "https://sit.newcoretech.com";
-}
+
+const loginByCrossToken = (crossToken) => {
+  const host = getNewcoreHost();
+  const redirectUrl = `${host}/embedded-app/subapp?url=/butler/inbox`;
+  const crossOriginLoginUrl = `${host}/home-app/cross-origin-login`;
+  window.location.href = `${crossOriginLoginUrl}?crossToken=${crossToken}&redirectUrl=${redirectUrl}`;
+};
 
 export default function SignupComponent() {
   const [username, setUsername] = useState("");
@@ -37,7 +47,7 @@ export default function SignupComponent() {
     // Here you would typically make an API call to send verification code
     try {
       const response = await fetch(
-        `${newcoreHost}/api/basedata/userCenter/account/v1/sms/bind`,
+        `${getNewcoreHost()}/api/basedata/userCenter/account/v1/sms/bind`,
         {
           method: "POST",
           headers: {
@@ -106,7 +116,7 @@ export default function SignupComponent() {
     setLoading(true);
     try {
       const response = await fetch(
-        `${newcoreHost}/api/operation/multiOrg/account/phone/signup`,
+        `${getNewcoreHost()}/api/operation/multiOrg/account/phone/login`,
         {
           method: "POST",
           headers: {
@@ -118,6 +128,7 @@ export default function SignupComponent() {
               smsCode: verifyCode,
               source: 5,
               account: username,
+              crossToken: true,
             },
           }),
         }
@@ -131,7 +142,10 @@ export default function SignupComponent() {
       // Handle successful signup (e.g., store token, redirect)
       if (data.code === 200) {
         console.log("Signup successful:", data);
-        window.location.href = `${newcoreHost}/embedded-app/subapp?url=/butler/inbox`;
+        const crossToken = data.data?.entity?.crossToken;
+        if (crossToken) {
+          loginByCrossToken(crossToken);
+        }
       } else {
         setError({ signup: "Signup failed. Please try again." });
       }
