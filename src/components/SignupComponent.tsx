@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /** 用于qa和sit环境的切换，方便测试 */
 const getNewcoreHost = () => {
@@ -29,6 +29,17 @@ export default function SignupComponent() {
   const [verifyCode, setVerifyCode] = useState("");
   const timerRef = useRef(0);
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    }
+  }, [])
 
   const validatePhone = (phoneNumber) => {
     const phoneRegex = /^\d{11}$/;
