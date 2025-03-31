@@ -36,6 +36,7 @@ export default function SignupComponent() {
   };
 
   const handleSendCode = async () => {
+    console.log("handleSendCode-->", Date.now());
     if (!validatePhone(phone)) {
       setError((oldError) => ({
         ...oldError,
@@ -79,6 +80,9 @@ export default function SignupComponent() {
       setLoading(false);
     }
     // in 60 seconds, the button can be clicked again
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
     let count = 60;
     setCount(60);
     timerRef.current = setInterval(() => {
