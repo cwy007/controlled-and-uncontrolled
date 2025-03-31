@@ -70,7 +70,7 @@ const VerifyCodeLogin = () => {
       if (data.code === 200) {
         console.log("Login successful:", data);
       } else {
-        setError({ login: "Send code failed. Please try again." });
+        setError({ login: data.message || "Send code failed. Please try again." });
       }
     } catch (err: any) {
       // setError("Login failed. Please try again.");
@@ -138,7 +138,7 @@ const VerifyCodeLogin = () => {
           loginByCrossToken(crossToken);
         }
       } else {
-        setError({ login: "Login failed. Please try again." });
+        setError({ login: data.message || "Login failed. Please try again." });
       }
     } catch (err) {
       setError({ login: "Login failed. Please try again." });
@@ -310,7 +310,7 @@ const PasswordLogin = () => {
           loginByCrossToken(crossToken);
         }
       } else {
-        setError({ login: "Login failed. Please try again." });
+        setError({ login: data.message || "Login failed. Please try again." });
       }
     } catch (err) {
       setError({ login: "Login failed. Please try again." });

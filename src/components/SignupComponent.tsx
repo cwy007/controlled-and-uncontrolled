@@ -70,7 +70,7 @@ export default function SignupComponent() {
       if (data.code === 200) {
         console.log("Signup successful:", data);
       } else {
-        setError({ signup: "Send code failed. Please try again." });
+        setError({ signup: data.message || "Send code failed. Please try again." });
       }
     } catch (err: any) {
       // setError("Signup failed. Please try again.");
@@ -147,7 +147,7 @@ export default function SignupComponent() {
           loginByCrossToken(crossToken);
         }
       } else {
-        setError({ signup: "Signup failed. Please try again." });
+        setError({ signup: data.message || "Signup failed. Please try again." });
       }
     } catch (err) {
       setError({ signup: "Signup failed. Please try again." });
