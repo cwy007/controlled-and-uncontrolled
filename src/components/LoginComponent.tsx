@@ -641,7 +641,7 @@ const styles = {
   error: {
     color: "#ff4444",
     fontSize: "0.9rem",
-    textAlign: "center",
+    textAlign: "left",
     "@media (max-width: 480px)": {
       fontSize: "0.85rem",
     },

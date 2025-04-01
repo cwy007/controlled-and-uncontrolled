@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { background } from "storybook/internal/theming";
 
 /** 用于qa和sit环境的切换，方便测试 */
 const getNewcoreHost = () => {
@@ -462,7 +461,7 @@ const styles = {
   error: {
     color: "#ff4444",
     fontSize: "0.9rem",
-    textAlign: "center",
+    textAlign: "left",
     "@media (max-width: 480px)": {
       fontSize: "0.85rem",
     },
