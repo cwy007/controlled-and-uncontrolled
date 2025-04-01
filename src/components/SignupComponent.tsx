@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { background } from "storybook/internal/theming";
 
 /** 用于qa和sit环境的切换，方便测试 */
 const getNewcoreHost = () => {
@@ -173,6 +174,28 @@ export default function SignupComponent() {
 
   return (
     <div style={styles.container}>
+      {error.signup && (
+        <div style={styles.apiError}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            rotate={"180deg"}
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" x2="12.01" y1="7" y2="8" />
+            <line x1="12" x2="12" y1="11" y2="18" />
+          </svg>
+          <div style={styles.error as any}>{error.signup}</div>
+        </div>
+      )}
+
       <form onSubmit={handleSignup} style={styles.form as any}>
         <div style={styles.inputGroup as any}>
           <label htmlFor="username" style={styles.label}>
@@ -280,8 +303,6 @@ export default function SignupComponent() {
           {error.verifyCode && <div style={styles.errorLeft as any}>{error.verifyCode}</div>}
         </div>
 
-        {error.signup && <div style={styles.error as any}>{error.signup}</div>}
-
         <button
           type="submit"
           style={{
@@ -313,6 +334,23 @@ const styles = {
       padding: "1rem",
       width: "calc(100vw - 1rem)",
       margin: "0.5rem",
+    },
+  },
+  apiError: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    gap: "0.5rem",
+    padding: "1rem",
+    marginBottom: "1.5rem",
+    borderRadius: '10px',
+    color: "#F21B1B",
+    backgroundColor: "rgba(255, 36, 36, 0.15)",
+    fontSize: "0.9rem",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    "@media (max-width: 480px)": {
+      fontSize: "0.85rem",
     },
   },
   form: {
