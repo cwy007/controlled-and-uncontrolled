@@ -59,7 +59,7 @@ export default function SignupComponent() {
     // Here you would typically make an API call to send verification code
     try {
       const response = await fetch(
-        `${getNewcoreHost()}/api-domain/user-center/authority/authority/v1/login/sms`,
+        `${getNewcoreHost()}/api-domain/user-center/authority/authority/register/sms`,
         {
           method: "POST",
           headers: {
@@ -67,7 +67,7 @@ export default function SignupComponent() {
           },
           body: JSON.stringify({
             body: {
-              phoneNum: phone,
+              mobilePhone: phone,
             },
           }),
         }
