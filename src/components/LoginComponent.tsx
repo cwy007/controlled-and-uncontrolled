@@ -64,7 +64,7 @@ const VerifyCodeLogin = ({
     // Here you would typically make an API call to send verification code
     try {
       const response = await fetch(
-        `${getNewcoreHost()}/api-domain/user-center/authority/authority/register/sms`,
+        `${getNewcoreHost()}/api-domain/user-center/authority/authority/v1/login/sms`,
         {
           method: "POST",
           headers: {
@@ -72,7 +72,7 @@ const VerifyCodeLogin = ({
           },
           body: JSON.stringify({
             body: {
-              mobilePhone: phone,
+              phoneNum: phone,
             },
           }),
         }
