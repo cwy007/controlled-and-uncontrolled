@@ -86,6 +86,19 @@ const VerifyCodeLogin = ({
       // Handle successful login (e.g., store token, redirect)
       if (data.code === 200) {
         console.log("Login successful:", data);
+
+        // in 60 seconds, the button can be clicked again
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+        }
+        let count = 60;
+        setCount(60);
+        timerRef.current = setInterval(() => {
+          setCount((count) => count - 1);
+          if (count <= 0) {
+            clearInterval(timerRef.current);
+          }
+        }, 1000);
       } else {
         setError({ login: data.message || "Send code failed. Please try again." });
       }
@@ -95,18 +108,6 @@ const VerifyCodeLogin = ({
     } finally {
       setLoading(false);
     }
-    // in 60 seconds, the button can be clicked again
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-    let count = 60;
-    setCount(60);
-    timerRef.current = setInterval(() => {
-      setCount((count) => count - 1);
-      if (count <= 0) {
-        clearInterval(timerRef.current);
-      }
-    }, 1000);
   };
 
   const handleSmsLogin = async (e) => {

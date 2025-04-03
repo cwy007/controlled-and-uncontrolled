@@ -81,6 +81,19 @@ export default function SignupComponent() {
       // Handle successful signup (e.g., store token, redirect)
       if (data.code === 200) {
         console.log("Signup successful:", data);
+
+        // in 60 seconds, the button can be clicked again
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+        }
+        let count = 60;
+        setCount(60);
+        timerRef.current = setInterval(() => {
+          setCount((count) => count - 1);
+          if (count <= 0) {
+            clearInterval(timerRef.current);
+          }
+        }, 1000);
       } else {
         setError({ signup: data.message || "Send code failed. Please try again." });
       }
@@ -90,18 +103,6 @@ export default function SignupComponent() {
     } finally {
       setLoading(false);
     }
-    // in 60 seconds, the button can be clicked again
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-    let count = 60;
-    setCount(60);
-    timerRef.current = setInterval(() => {
-      setCount((count) => count - 1);
-      if (count <= 0) {
-        clearInterval(timerRef.current);
-      }
-    }, 1000);
   };
 
   const handleSignup = async (e) => {
