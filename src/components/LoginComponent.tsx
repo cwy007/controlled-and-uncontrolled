@@ -101,6 +101,7 @@ const VerifyCodeLogin = ({
         }, 1000);
       } else {
         setError({ login: data.message || "Send code failed. Please try again." });
+        setCount(0);
       }
     } catch (err: any) {
       // setError("Login failed. Please try again.");

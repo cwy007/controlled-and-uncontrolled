@@ -96,6 +96,7 @@ export default function SignupComponent() {
         }, 1000);
       } else {
         setError({ signup: data.message || "Send code failed. Please try again." });
+        setCount(0);
       }
     } catch (err: any) {
       // setError("Signup failed. Please try again.");
