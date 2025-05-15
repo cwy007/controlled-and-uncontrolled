@@ -2,20 +2,20 @@ import { useEffect, useRef, useState } from "react";
 
 /** 用于qa和sit环境的切换，方便测试 */
 const getNewcoreHost = () => {
-  let host = 'https://c2.xinheyun.com';
+  let host = "https://c2.xinheyun.com";
   const threeChatAiEnv = localStorage.getItem("threeChatAiEnv");
-  if (threeChatAiEnv === 'qa') {
+  if (threeChatAiEnv === "qa") {
     host = "https://qa.newcoretech.com";
   }
   if (threeChatAiEnv === "sit") {
     host = "https://sit.newcoretech.com";
   }
   return host;
-}
+};
 
 const loginByCrossToken = (crossToken) => {
   const host = getNewcoreHost();
-  const redirectUrl = `${host}/embedded-app/subapp?url=/butler/inbox`;
+  const redirectUrl = `${host}/embedded-app/subapp?url=/butler/on-boarding`;
   const crossOriginLoginUrl = `${host}/home-app/cross-origin-login`;
   window.location.href = `${crossOriginLoginUrl}?crossToken=${crossToken}&redirectUrl=${redirectUrl}`;
 };
@@ -38,8 +38,8 @@ export default function SignupComponent() {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   const validatePhone = (phoneNumber) => {
     const phoneRegex = /^\d{11}$/;
@@ -95,12 +95,14 @@ export default function SignupComponent() {
           }
         }, 1000);
       } else {
-        setError({ signup: data.message || "Send code failed. Please try again." });
-        setCount(0);
+        setError({
+          signup: data.message || "Send code failed. Please try again.",
+        });
       }
     } catch (err: any) {
       // setError("Signup failed. Please try again.");
       setError({ signup: "Send code failed. Please try again." });
+      setCount(0);
     } finally {
       setLoading(false);
     }
@@ -164,7 +166,9 @@ export default function SignupComponent() {
           loginByCrossToken(crossToken);
         }
       } else {
-        setError({ signup: data.message || "Signup failed. Please try again." });
+        setError({
+          signup: data.message || "Signup failed. Please try again.",
+        });
       }
     } catch (err) {
       setError({ signup: "Signup failed. Please try again." });
@@ -344,7 +348,7 @@ const styles = {
     gap: "0.5rem",
     padding: "1rem",
     marginBottom: "1.5rem",
-    borderRadius: '10px',
+    borderRadius: "10px",
     color: "#F21B1B",
     backgroundColor: "rgba(255, 36, 36, 0.15)",
     fontSize: "0.9rem",
