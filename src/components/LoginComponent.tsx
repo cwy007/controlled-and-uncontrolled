@@ -1,24 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 /** 用于qa和sit环境的切换，方便测试 */
 const getNewcoreHost = () => {
-  let host = 'https://c2.xinheyun.com';
+  let host = "https://c2.xinheyun.com";
   const threeChatAiEnv = localStorage.getItem("threeChatAiEnv");
-  if (threeChatAiEnv === 'qa') {
+  if (threeChatAiEnv === "qa") {
     host = "https://qa.newcoretech.com";
   }
   if (threeChatAiEnv === "sit") {
     host = "https://sit.newcoretech.com";
   }
   return host;
-}
+};
 
 const loginByCrossToken = (crossToken) => {
   const host = getNewcoreHost();
-  const redirectUrl = `${host}/embedded-app/subapp?url=/butler/inbox`;
+  const redirectUrl = `${host}/embedded-app/subapp?url=/butler/on-boarding`;
   const crossOriginLoginUrl = `${host}/home-app/cross-origin-login`;
   window.location.href = `${crossOriginLoginUrl}?crossToken=${crossToken}&redirectUrl=${redirectUrl}`;
-}
+};
 
 const VerifyCodeLogin = ({
   error,
@@ -100,7 +104,9 @@ const VerifyCodeLogin = ({
           }
         }, 1000);
       } else {
-        setError({ login: data.message || "Send code failed. Please try again." });
+        setError({
+          login: data.message || "Send code failed. Please try again.",
+        });
         setCount(0);
       }
     } catch (err: any) {
@@ -160,7 +166,9 @@ const VerifyCodeLogin = ({
           loginByCrossToken(crossToken);
         }
       } else {
-        setError({ login: data.message || "Login failed. Please try again." });
+        setError({
+          login: data.message || "Login failed. Please try again.",
+        });
       }
     } catch (err) {
       setError({ login: "Login failed. Please try again." });
@@ -203,7 +211,9 @@ const VerifyCodeLogin = ({
           onFocus={() => setFocusedInput("phone")}
           onBlur={() => setFocusedInput("")}
         />
-        {error.phone && <div style={styles.errorLeft as any}>{error.phone}</div>}
+        {error.phone && (
+          <div style={styles.errorLeft as any}>{error.phone}</div>
+        )}
       </div>
 
       <div style={styles.inputGroup as any}>
@@ -218,7 +228,10 @@ const VerifyCodeLogin = ({
             onChange={(e) => {
               // replace(/\D/g, "") to allow only digits
               setVerifyCode(e.target.value.replace(/\D/g, ""));
-              if (error.verifyCode && (!verifyCode || verifyCode.length !== 6)) {
+              if (
+                error.verifyCode &&
+                (!verifyCode || verifyCode.length !== 6)
+              ) {
                 setError((oldError) => ({
                   ...oldError,
                   verifyCode: "Please enter a valid 6-digit verification code",
@@ -253,7 +266,9 @@ const VerifyCodeLogin = ({
             {count > 0 ? `${count} s` : "Send Code"}
           </button>
         </div>
-        {error.verifyCode && <div style={styles.errorLeft as any}>{error.verifyCode}</div>}
+        {error.verifyCode && (
+          <div style={styles.errorLeft as any}>{error.verifyCode}</div>
+        )}
       </div>
 
       <button
@@ -335,7 +350,9 @@ const PasswordLogin = ({
           loginByCrossToken(crossToken);
         }
       } else {
-        setError({ login: data.message || "Login failed. Please try again." });
+        setError({
+          login: data.message || "Login failed. Please try again.",
+        });
       }
     } catch (err) {
       setError({ login: "Login failed. Please try again." });
@@ -364,7 +381,9 @@ const PasswordLogin = ({
           onFocus={() => setFocusedInput("username")}
           onBlur={() => setFocusedInput("")}
         />
-        {error.username && <div style={styles.errorLeft as any}>{error.username}</div>}
+        {error.username && (
+          <div style={styles.errorLeft as any}>{error.username}</div>
+        )}
       </div>
 
       <div style={styles.inputGroup as any}>
@@ -385,7 +404,9 @@ const PasswordLogin = ({
           onFocus={() => setFocusedInput("password")}
           onBlur={() => setFocusedInput("")}
         />
-        {error.password && <div style={styles.errorLeft as any}>{error.password}</div>}
+        {error.password && (
+          <div style={styles.errorLeft as any}>{error.password}</div>
+        )}
       </div>
 
       <button
@@ -409,6 +430,26 @@ const PasswordLogin = ({
 export default function LoginComponent() {
   const [activeTab, setActiveTab] = useState("verify");
   const [error, setError] = useState<Record<string, string>>({});
+  const [showContextMenu, setShowContextMenu] = useState(false);
+  const [contextMenuPosition, setContextMenuPosition] = useState({ x: 0, y: 0 });
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setContextMenuPosition({ x: e.clientX, y: e.clientY });
+    setShowContextMenu(true);
+  };
+
+  const handleEnvChange = (env: string) => {
+    localStorage.setItem("threeChatAiEnv", env);
+    window.location.reload();
+    setShowContextMenu(false);
+  };
+
+  useEffect(() => {
+    const handleClick = () => setShowContextMenu(false);
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
 
   return (
     <div style={styles.container}>
@@ -433,7 +474,36 @@ export default function LoginComponent() {
           <div style={styles.error as any}>{error.login}</div>
         </div>
       )}
-      <div style={styles.tabs}>
+      <div style={styles.tabs} onContextMenu={handleContextMenu}>
+        {showContextMenu && (
+          <div
+            style={{
+              ...styles.contextMenu,
+              left: contextMenuPosition.x,
+              top: contextMenuPosition.y,
+            }}
+          >
+            <div style={styles.menuItem} onClick={() => handleEnvChange("c2")}>
+              <span>c2</span>
+              {localStorage.getItem("threeChatAiEnv") !== "sit" &&
+                localStorage.getItem("threeChatAiEnv") !== "qa" && (
+                  <span style={styles.checkmark}>✓</span>
+                )}
+            </div>
+            <div style={styles.menuItem} onClick={() => handleEnvChange("sit")}>
+              <span>sit</span>
+              {localStorage.getItem("threeChatAiEnv") === "sit" && (
+                <span style={styles.checkmark}>✓</span>
+              )}
+            </div>
+            <div style={styles.menuItem} onClick={() => handleEnvChange("qa")}>
+              <span>qa</span>
+              {localStorage.getItem("threeChatAiEnv") === "qa" && (
+                <span style={styles.checkmark}>✓</span>
+              )}
+            </div>
+          </div>
+        )}
         <button
           style={
             {
@@ -458,8 +528,12 @@ export default function LoginComponent() {
         </button>
       </div>
 
-      {activeTab === "verify" && <VerifyCodeLogin error={error} setError={setError} />}
-      {activeTab === "password" && <PasswordLogin error={error} setError={setError} />}
+      {activeTab === "verify" && (
+        <VerifyCodeLogin error={error} setError={setError} />
+      )}
+      {activeTab === "password" && (
+        <PasswordLogin error={error} setError={setError} />
+      )}
     </div>
   );
 }
@@ -477,6 +551,32 @@ const styles = {
       width: "calc(100vw - 1rem)",
       margin: "0.5rem",
     },
+  },
+  contextMenu: {
+    position: "fixed",
+    backgroundColor: "#1a1a1a",
+    border: "1px solid rgba(255, 255, 255, 0.1)",
+    borderRadius: "8px",
+    padding: "0.5rem 0",
+    minWidth: "120px",
+    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
+  },
+  menuItem: {
+    padding: "0.5rem 1rem",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    color: "#fff",
+    transition: "background-color 0.2s",
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.1)",
+    },
+  },
+  checkmark: {
+    marginLeft: "0.5rem",
+    color: "#0066ff",
   },
   apiError: {
     display: "flex",
